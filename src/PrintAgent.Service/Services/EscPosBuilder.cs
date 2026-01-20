@@ -111,6 +111,45 @@ public class EscPosBuilder
         return this;
     }
 
+    /// <summary>
+    /// Imprime texto con word-wrap automático según el ancho del papel
+    /// </summary>
+    public EscPosBuilder WrappedLine(string text, string prefix = "")
+    {
+        if (string.IsNullOrEmpty(text))
+            return this;
+
+        int maxWidth = _lineWidth - prefix.Length;
+        if (maxWidth <= 0) maxWidth = _lineWidth;
+
+        var words = text.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        var currentLine = new StringBuilder();
+
+        foreach (var word in words)
+        {
+            if (currentLine.Length == 0)
+            {
+                currentLine.Append(word);
+            }
+            else if (currentLine.Length + 1 + word.Length <= maxWidth)
+            {
+                currentLine.Append(' ').Append(word);
+            }
+            else
+            {
+                Line(prefix + currentLine);
+                currentLine.Clear().Append(word);
+            }
+        }
+
+        if (currentLine.Length > 0)
+        {
+            Line(prefix + currentLine);
+        }
+
+        return this;
+    }
+
     public EscPosBuilder Separator(char c = '-')
     {
         Line(new string(c, _lineWidth));

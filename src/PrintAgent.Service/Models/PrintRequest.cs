@@ -24,6 +24,7 @@ public class BillData
     public string? CustomerName { get; set; }
     public string? CustomerPhone { get; set; }
     public string? CustomerIdNumber { get; set; }
+    public string? CustomerAddress { get; set; }
     public string? DeliveryAddress { get; set; }
 
     // Totales

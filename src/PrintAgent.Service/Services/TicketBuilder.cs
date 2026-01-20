@@ -111,6 +111,10 @@ public class TicketBuilder
             {
                 builder.Line($"Tel: {bill.CustomerPhone}");
             }
+            if (!string.IsNullOrEmpty(bill.CustomerAddress))
+            {
+                builder.WrappedLine(bill.CustomerAddress, "Dir: ");
+            }
         }
 
         // Fecha
