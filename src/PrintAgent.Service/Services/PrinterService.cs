@@ -26,6 +26,11 @@ public class PrinterService : IPrinterService
 
     public PrintResult PrintBill(PrintBillRequest request)
     {
+        return PrintBillAsync(request, null).GetAwaiter().GetResult();
+    }
+
+    public async Task<PrintResult> PrintBillAsync(PrintBillRequest request, ILogoCacheService? logoCache)
+    {
         try
         {
             var printer = GetPrinterConfig(request.PrinterName);
@@ -34,8 +39,17 @@ public class PrinterService : IPrinterService
                 return PrintResult.Error($"Impresora '{request.PrinterName}' no configurada", "PRINTER_NOT_FOUND");
             }
 
+            var business = request.Business ?? _settings.Business;
+
+            // Obtener logo del caché si está disponible
+            byte[]? logoBitmap = null;
+            if (logoCache != null && !string.IsNullOrEmpty(business?.Logo))
+            {
+                logoBitmap = await logoCache.GetLogoBitmapAsync(business.Logo);
+            }
+
             var ticketBuilder = new TicketBuilder(printer.PaperWidth);
-            var ticketData = ticketBuilder.BuildBillTicket(request.Bill, request.Business ?? _settings.Business);
+            var ticketData = ticketBuilder.BuildBillTicket(request.Bill, business, logoBitmap);
 
             var result = SendRawDataToPrinter(printer.SystemName, ticketData);
             if (!result)
@@ -57,6 +71,11 @@ public class PrinterService : IPrinterService
 
     public PrintResult PrintPreBill(PrintPreBillRequest request)
     {
+        return PrintPreBillAsync(request, null).GetAwaiter().GetResult();
+    }
+
+    public async Task<PrintResult> PrintPreBillAsync(PrintPreBillRequest request, ILogoCacheService? logoCache)
+    {
         try
         {
             var printer = GetPrinterConfig(request.PrinterName);
@@ -65,8 +84,17 @@ public class PrinterService : IPrinterService
                 return PrintResult.Error($"Impresora '{request.PrinterName}' no configurada", "PRINTER_NOT_FOUND");
             }
 
+            var business = request.Business ?? _settings.Business;
+
+            // Obtener logo del caché si está disponible
+            byte[]? logoBitmap = null;
+            if (logoCache != null && !string.IsNullOrEmpty(business?.Logo))
+            {
+                logoBitmap = await logoCache.GetLogoBitmapAsync(business.Logo);
+            }
+
             var ticketBuilder = new TicketBuilder(printer.PaperWidth);
-            var ticketData = ticketBuilder.BuildPreBillTicket(request.Bill, request.Business ?? _settings.Business);
+            var ticketData = ticketBuilder.BuildPreBillTicket(request.Bill, business, logoBitmap);
 
             var result = SendRawDataToPrinter(printer.SystemName, ticketData);
             if (!result)

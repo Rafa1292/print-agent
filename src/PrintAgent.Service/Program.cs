@@ -19,6 +19,7 @@ builder.Services.Configure<PrintAgentSettings>(
     builder.Configuration.GetSection("PrintAgent"));
 
 // Registrar servicios
+builder.Services.AddSingleton<ILogoCacheService, LogoCacheService>();
 builder.Services.AddSingleton<IPrinterService, PrinterService>();
 builder.Services.AddSingleton<IConfigurationService, ConfigurationService>();
 
@@ -78,16 +79,16 @@ app.MapGet("/printers/system", (IPrinterService printerService) =>
 });
 
 // POST /print/bill - Imprime factura
-app.MapPost("/print/bill", (PrintBillRequest request, IPrinterService printerService) =>
+app.MapPost("/print/bill", async (PrintBillRequest request, IPrinterService printerService, ILogoCacheService logoCache) =>
 {
-    var result = printerService.PrintBill(request);
+    var result = await printerService.PrintBillAsync(request, logoCache);
     return result.Success ? Results.Ok(result) : Results.BadRequest(result);
 });
 
 // POST /print/pre-bill - Imprime pre-cuenta
-app.MapPost("/print/pre-bill", (PrintPreBillRequest request, IPrinterService printerService) =>
+app.MapPost("/print/pre-bill", async (PrintPreBillRequest request, IPrinterService printerService, ILogoCacheService logoCache) =>
 {
-    var result = printerService.PrintPreBill(request);
+    var result = await printerService.PrintPreBillAsync(request, logoCache);
     return result.Success ? Results.Ok(result) : Results.BadRequest(result);
 });
 

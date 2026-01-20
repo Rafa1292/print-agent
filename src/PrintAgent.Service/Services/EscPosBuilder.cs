@@ -167,6 +167,15 @@ public class EscPosBuilder
         return this;
     }
 
+    /// <summary>
+    /// Agrega bytes raw al buffer (para imágenes bitmap)
+    /// </summary>
+    public EscPosBuilder RawBytes(byte[] data)
+    {
+        _buffer.AddRange(data);
+        return this;
+    }
+
     public byte[] Build()
     {
         return _buffer.ToArray();

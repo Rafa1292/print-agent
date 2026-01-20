@@ -17,7 +17,7 @@ public class TicketBuilder
     /// <summary>
     /// Construye ticket de factura/cuenta
     /// </summary>
-    public byte[] BuildBillTicket(BillData bill, BusinessInfo? business)
+    public byte[] BuildBillTicket(BillData bill, BusinessInfo? business, byte[]? logoBitmap = null)
     {
         var builder = new EscPosBuilder(_lineWidth);
 
@@ -30,6 +30,14 @@ public class TicketBuilder
                 .Line("*** REIMPRESION ***")
                 .Bold(false)
                 .Lines(1);
+        }
+
+        // Logo del negocio (si está disponible)
+        if (logoBitmap != null && logoBitmap.Length > 0)
+        {
+            builder.AlignCenter();
+            builder.RawBytes(logoBitmap);
+            builder.Lines(1);
         }
 
         // Encabezado del negocio
@@ -280,9 +288,17 @@ public class TicketBuilder
     /// <summary>
     /// Construye ticket de pre-cuenta (sin método de pago)
     /// </summary>
-    public byte[] BuildPreBillTicket(BillData bill, BusinessInfo? business)
+    public byte[] BuildPreBillTicket(BillData bill, BusinessInfo? business, byte[]? logoBitmap = null)
     {
         var builder = new EscPosBuilder(_lineWidth);
+
+        // Logo del negocio (si está disponible)
+        if (logoBitmap != null && logoBitmap.Length > 0)
+        {
+            builder.AlignCenter();
+            builder.RawBytes(logoBitmap);
+            builder.Lines(1);
+        }
 
         // Encabezado
         builder
