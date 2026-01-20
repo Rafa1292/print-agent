@@ -111,15 +111,17 @@ public class TicketBuilder
             {
                 builder.Line($"Tel: {bill.CustomerPhone}");
             }
-            if (!string.IsNullOrEmpty(bill.CustomerAddress))
-            {
-                builder.WrappedLine(bill.CustomerAddress, "Dir: ");
-            }
         }
 
         // Fecha
         var date = ParseDate(bill.CreatedAt) ?? DateTime.Now;
         builder.Line($"Fecha: {date:dd/MM/yyyy HH:mm}");
+
+        // Dirección del cliente (después de la fecha)
+        if (!string.IsNullOrEmpty(bill.CustomerAddress))
+        {
+            builder.WrappedLine(bill.CustomerAddress);
+        }
 
         builder.Separator();
 
