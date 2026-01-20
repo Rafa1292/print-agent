@@ -67,13 +67,20 @@ jobs:
           New-Item -ItemType Directory -Force -Path dist | Out-Null
           iscc /Q installer/setup.iss
 
+      - name: Copy installer with generic name
+        shell: pwsh
+        run: |
+          Copy-Item "dist/PrintAgent-Setup-${{ steps.version.outputs.VERSION }}.exe" "dist/PrintAgent-Setup.exe"
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           name: PrintAgent v${{ steps.version.outputs.VERSION }}
           draft: false
           prerelease: false
-          files: dist/PrintAgent-Setup-${{ steps.version.outputs.VERSION }}.exe
+          files: |
+            dist/PrintAgent-Setup-${{ steps.version.outputs.VERSION }}.exe
+            dist/PrintAgent-Setup.exe
           body: |
             ## PrintAgent v${{ steps.version.outputs.VERSION }}
 
