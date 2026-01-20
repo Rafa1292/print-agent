@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Options;
 using PrintAgent.Service.Models;
 using PrintAgent.Service.Services;
@@ -6,6 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Configurar como Windows Service
 builder.Host.UseWindowsService();
+
+// Configurar JSON para aceptar enums como strings
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+});
 
 // Cargar configuración
 builder.Services.Configure<PrintAgentSettings>(

@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PrintAgent.Service.Models;
@@ -20,7 +21,8 @@ public class ConfigurationService : IConfigurationService
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         WriteIndented = true,
-        PropertyNamingPolicy = null // Mantener PascalCase
+        PropertyNamingPolicy = null, // Mantener PascalCase
+        Converters = { new JsonStringEnumConverter() }
     };
 
     public ConfigurationService(
