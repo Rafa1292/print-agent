@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\build\PrintAgent.Service.props" />
-</Project>
