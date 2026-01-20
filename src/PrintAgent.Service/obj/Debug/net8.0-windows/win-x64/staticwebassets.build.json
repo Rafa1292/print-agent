@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "dy4CFZQpOuyjpdHfDtK2WqFpub5T4osYV/IGKBvpgcg=",
+  "Source": "PrintAgent.Service",
+  "BasePath": "_content/PrintAgent.Service",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
