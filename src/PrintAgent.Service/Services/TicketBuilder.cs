@@ -157,6 +157,12 @@ public class TicketBuilder
                 {
                     foreach (var element in modGroup.Elements)
                     {
+                        // Si es combinado, mostrar etiqueta
+                        if (element.IsCombined)
+                        {
+                            builder.Line("    Combinado con:");
+                        }
+
                         string modLine = element.Quantity > 1
                             ? $"  + {element.Quantity}x {element.Name}"
                             : $"  + {element.Name}";
@@ -353,6 +359,12 @@ public class TicketBuilder
                 {
                     foreach (var element in modGroup.Elements)
                     {
+                        // Si es combinado, mostrar etiqueta
+                        if (element.IsCombined)
+                        {
+                            builder.Line("    Combinado con:");
+                        }
+
                         string modLine = element.Quantity > 1
                             ? $"  + {element.Quantity}x {element.Name}"
                             : $"  + {element.Name}";
