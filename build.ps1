@@ -19,35 +19,27 @@ Write-Host ""
 
 # Clean if requested
 if ($Clean) {
-    Write-Host "[1/4] Cleaning previous builds..." -ForegroundColor Yellow
+    Write-Host "[1/3] Cleaning previous builds..." -ForegroundColor Yellow
     if (Test-Path $PublishDir) {
         Remove-Item -Recurse -Force $PublishDir
     }
     dotnet clean "$ScriptDir\PrintAgent.sln" -c $Configuration --nologo -v q
 }
 else {
-    Write-Host "[1/4] Skipping clean (use -Clean to clean)" -ForegroundColor Gray
+    Write-Host "[1/3] Skipping clean (use -Clean to clean)" -ForegroundColor Gray
 }
 
 # Restore packages
-Write-Host "[2/4] Restoring NuGet packages..." -ForegroundColor Yellow
+Write-Host "[2/3] Restoring NuGet packages..." -ForegroundColor Yellow
 dotnet restore "$ScriptDir\PrintAgent.sln" --nologo -v q
 if ($LASTEXITCODE -ne 0) { throw "Restore failed" }
 
 # Build solution
-Write-Host "[3/4] Building solution..." -ForegroundColor Yellow
-dotnet build "$ScriptDir\PrintAgent.sln" -c $Configuration --nologo --no-restore
-if ($LASTEXITCODE -ne 0) { throw "Build failed" }
+Write-Host "[3/3] Building and publishing..." -ForegroundColor Yellow
 
-# Publish both projects
-Write-Host "[4/4] Publishing projects..." -ForegroundColor Yellow
-
-# Create publish directories
+# Create publish directory
 $ServiceDir = Join-Path $PublishDir "service"
-$UIDir = Join-Path $PublishDir "ui"
-
 New-Item -ItemType Directory -Force -Path $ServiceDir | Out-Null
-New-Item -ItemType Directory -Force -Path $UIDir | Out-Null
 
 # Publish Service (self-contained for easier deployment)
 Write-Host "  - Publishing PrintAgent.Service..." -ForegroundColor Gray
@@ -61,25 +53,12 @@ dotnet publish "$ScriptDir\src\PrintAgent.Service\PrintAgent.Service.csproj" `
     --nologo -v q
 if ($LASTEXITCODE -ne 0) { throw "Service publish failed" }
 
-# Publish UI (self-contained for easier deployment)
-Write-Host "  - Publishing PrintAgent.UI..." -ForegroundColor Gray
-dotnet publish "$ScriptDir\src\PrintAgent.UI\PrintAgent.UI.csproj" `
-    -c $Configuration `
-    -r win-x64 `
-    --self-contained true `
-    -p:PublishSingleFile=true `
-    -p:IncludeNativeLibrariesForSelfExtract=true `
-    -o $UIDir `
-    --nologo -v q
-if ($LASTEXITCODE -ne 0) { throw "UI publish failed" }
-
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Green
 Write-Host "  Build completed successfully!" -ForegroundColor Green
 Write-Host "============================================" -ForegroundColor Green
 Write-Host ""
-Write-Host "Output directories:" -ForegroundColor White
+Write-Host "Output directory:" -ForegroundColor White
 Write-Host "  Service: $ServiceDir" -ForegroundColor Gray
-Write-Host "  UI:      $UIDir" -ForegroundColor Gray
 Write-Host ""
 Write-Host "To create installer, run Inno Setup with installer\setup.iss" -ForegroundColor Yellow

@@ -69,9 +69,10 @@
 
 **Solución:**
 
-1. Abrir la UI de PrintAgent (desde menú inicio o bandeja)
-2. Agregar la impresora con el nombre correcto
-3. Asegurarse de que el "Nombre" coincida con lo que envía la web (ej: "factura", "cocina")
+1. Abrir nico en el navegador
+2. Ir a Configuración > Impresión
+3. Agregar la impresora con el nombre correcto
+4. Asegurarse de que el "Nombre" coincida con lo que usa la aplicación (ej: "factura", "cocina")
 
 ---
 
@@ -104,7 +105,7 @@
 **Soluciones:**
 
 1. **Ajustar el ancho de papel:**
-   - Abrir UI de PrintAgent
+   - Abrir nico en el navegador → Configuración → Impresión
    - Editar la impresora
    - Cambiar "Ancho de papel" (típicamente 42 para 58mm, 48 para 80mm)
 
@@ -152,10 +153,10 @@ dotnet publish -c Release --self-contained false
 
 ---
 
-### La UI no conecta con el servicio
+### La web no conecta con el servicio
 
 **Síntomas:**
-- La UI muestra "Servicio no disponible"
+- La web muestra "No conectado" o "Servicio no disponible"
 - Pero el servicio está corriendo
 
 **Solución:**
@@ -165,12 +166,14 @@ dotnet publish -c Release --self-contained false
    netstat -an | findstr "5123"
    ```
 
-2. Si no aparece, revisar `appsettings.json`:
+2. Si no aparece, revisar `appsettings.json` en `C:\Program Files\PrintAgent\service\`:
    ```json
    {
      "Urls": "http://localhost:5123"
    }
    ```
+
+3. Verificar que el firewall permita conexiones en el puerto 5123
 
 ---
 

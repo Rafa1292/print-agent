@@ -89,7 +89,7 @@ Antes de crear un release:
 
 - [ ] Todos los cambios están commiteados
 - [ ] El proyecto compila sin errores (`dotnet build`)
-- [ ] Probado manualmente (servicio + UI)
+- [ ] Probado manualmente (servicio)
 - [ ] Actualizar CHANGELOG si existe
 - [ ] Decidir número de versión según cambios
 

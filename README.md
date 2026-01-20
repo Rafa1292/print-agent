@@ -7,8 +7,8 @@ Servicio de impresión local para impresoras térmicas. Permite que aplicaciones
 - **Impresión ESC/POS** - Comandos estándar para impresoras térmicas
 - **API REST** - Endpoints HTTP para integración con aplicaciones web
 - **Servicio Windows** - Corre en segundo plano automáticamente
-- **UI de Configuración** - Interfaz gráfica para gestionar impresoras
 - **Multi-impresora** - Soporte para múltiples impresoras (facturas, cocina, etc.)
+- **Configuración remota** - Las impresoras se configuran desde la aplicación web
 
 ## Instalación
 
@@ -33,6 +33,16 @@ cd print-agent
 # Instalar servicio (como Admin)
 .\scripts\install-service.ps1
 ```
+
+## Configuración de impresoras
+
+Las impresoras se configuran desde la aplicación web (nico) en **Configuración > Impresión**:
+
+1. Instalar PrintAgent en la computadora
+2. Abrir nico en el navegador
+3. Ir a Configuración > Impresión
+4. Hacer clic en "Agregar impresora"
+5. Seleccionar la impresora del sistema y configurar nombre, tipo y ancho
 
 ## Uso
 
@@ -129,12 +139,7 @@ dotnet build
 ### Ejecutar en desarrollo
 
 ```powershell
-# Servicio
 cd src/PrintAgent.Service
-dotnet run
-
-# UI
-cd src/PrintAgent.UI
 dotnet run
 ```
 
@@ -160,14 +165,10 @@ git push origin v1.0.0
 ```
 print-agent/
 ├── src/
-│   ├── PrintAgent.Service/     # Servicio Windows + API REST
-│   │   ├── Models/             # DTOs y configuración
-│   │   ├── Services/           # Lógica de negocio
-│   │   └── Program.cs          # Entry point con endpoints
-│   └── PrintAgent.UI/          # UI de configuración (WinForms)
-│       ├── Forms/              # Formularios
-│       ├── Models/             # Modelos locales
-│       └── Services/           # Cliente HTTP
+│   └── PrintAgent.Service/     # Servicio Windows + API REST
+│       ├── Models/             # DTOs y configuración
+│       ├── Services/           # Lógica de negocio
+│       └── Program.cs          # Entry point con endpoints
 ├── installer/                  # Script Inno Setup
 ├── scripts/                    # Scripts de utilidad
 └── docs/                       # Documentación adicional

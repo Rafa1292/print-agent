@@ -55,16 +55,6 @@ jobs:
             -p:IncludeNativeLibrariesForSelfExtract=true `
             -o publish/service
 
-      - name: Publish UI
-        run: |
-          dotnet publish src/PrintAgent.UI/PrintAgent.UI.csproj `
-            -c Release `
-            -r win-x64 `
-            --self-contained true `
-            -p:PublishSingleFile=true `
-            -p:IncludeNativeLibrariesForSelfExtract=true `
-            -o publish/ui
-
       - name: Install Inno Setup
         shell: pwsh
         run: |
@@ -100,5 +90,8 @@ jobs:
             3. Seguir el asistente de instalación
 
             El servicio se iniciará automáticamente después de la instalación.
+
+            ### Configuración
+            Las impresoras se configuran desde la aplicación web (nico).
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
