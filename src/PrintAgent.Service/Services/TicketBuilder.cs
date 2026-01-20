@@ -103,10 +103,6 @@ public class TicketBuilder
         if (!string.IsNullOrEmpty(bill.CustomerName))
         {
             builder.Line($"Cliente: {bill.CustomerName}");
-            if (!string.IsNullOrEmpty(bill.CustomerIdNumber))
-            {
-                builder.Line($"Doc: {bill.CustomerIdNumber}");
-            }
             if (!string.IsNullOrEmpty(bill.CustomerPhone))
             {
                 builder.Line($"Tel: {bill.CustomerPhone}");
@@ -123,18 +119,30 @@ public class TicketBuilder
             builder.WrappedLine(bill.CustomerAddress);
         }
 
-        // Datos de facturación (solo si están presentes)
-        if (!string.IsNullOrEmpty(bill.InvoiceIdNumber))
+        // Datos de facturación comercial (solo si hay nombre comercial o cédula)
+        bool hasInvoiceData = !string.IsNullOrEmpty(bill.InvoiceIdNumber) ||
+                              !string.IsNullOrEmpty(bill.InvoiceCommercialName);
+
+        if (hasInvoiceData)
         {
-            builder.Line($"Cedula: {bill.InvoiceIdNumber}");
-        }
-        if (!string.IsNullOrEmpty(bill.InvoiceCommercialName))
-        {
-            builder.WrappedLine(bill.InvoiceCommercialName);
-        }
-        if (!string.IsNullOrEmpty(bill.InvoiceEmail))
-        {
-            builder.Line(bill.InvoiceEmail);
+            builder.Separator();
+            builder
+                .Bold()
+                .Line("FACTURAR A:")
+                .Bold(false);
+
+            if (!string.IsNullOrEmpty(bill.InvoiceCommercialName))
+            {
+                builder.WrappedLine(bill.InvoiceCommercialName);
+            }
+            if (!string.IsNullOrEmpty(bill.InvoiceIdNumber))
+            {
+                builder.Line($"Cedula: {bill.InvoiceIdNumber}");
+            }
+            if (!string.IsNullOrEmpty(bill.InvoiceEmail))
+            {
+                builder.Line($"Email: {bill.InvoiceEmail}");
+            }
         }
 
         builder.Separator();
