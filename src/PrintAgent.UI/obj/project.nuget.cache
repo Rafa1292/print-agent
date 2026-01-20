@@ -1,8 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "C/+c5kgP+CI=",
+  "dgSpecHash": "ReE7qtgifes=",
   "success": true,
   "projectFilePath": "C:\\Users\\jrvj_\\code\\Nebulosa\\print-agent\\src\\PrintAgent.UI\\PrintAgent.UI.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\jrvj_\\.nuget\\packages\\microsoft.net.illink.tasks\\8.0.23\\microsoft.net.illink.tasks.8.0.23.nupkg.sha512",
+    "C:\\Users\\jrvj_\\.nuget\\packages\\microsoft.netcore.app.runtime.win-x64\\8.0.23\\microsoft.netcore.app.runtime.win-x64.8.0.23.nupkg.sha512",
+    "C:\\Users\\jrvj_\\.nuget\\packages\\microsoft.windowsdesktop.app.runtime.win-x64\\8.0.23\\microsoft.windowsdesktop.app.runtime.win-x64.8.0.23.nupkg.sha512",
+    "C:\\Users\\jrvj_\\.nuget\\packages\\microsoft.aspnetcore.app.runtime.win-x64\\8.0.23\\microsoft.aspnetcore.app.runtime.win-x64.8.0.23.nupkg.sha512"
+  ],
   "logs": []
 }

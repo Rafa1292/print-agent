@@ -6,7 +6,7 @@ Este documento sirve como guía para implementar el proyecto en múltiples sesio
 
 ---
 
-## Estado Actual: FASE 4 PENDIENTE
+## Estado Actual: FASE 7 PENDIENTE
 
 ---
 
@@ -204,21 +204,40 @@ src/PrintAgent.Service/
 
 ---
 
-## Fase 4: Configuración y Persistencia ⏳ PENDIENTE
+## Fase 4: Configuración y Persistencia ✅ COMPLETADA
 **Tiempo estimado de sesión:** ~15 min
 
 ### Objetivos:
-- [ ] Crear `appsettings.json` con estructura de configuración
-- [ ] Implementar lectura/escritura de configuración
-- [ ] Crear servicio de configuración compartido
+- [x] Crear `appsettings.json` con estructura de configuración
+- [x] Implementar lectura/escritura de configuración
+- [x] Crear servicio de configuración compartido
 
-### Archivos a crear:
+### Archivos creados:
 ```
 src/PrintAgent.Service/
-├── appsettings.json       # Configuración por defecto
+├── appsettings.json                           # ✅ Ya existía de Fase 2
 └── Services/
-    └── ConfigurationService.cs
+    ├── IConfigurationService.cs               # ✅ Interfaz del servicio
+    └── ConfigurationService.cs                # ✅ Implementación CRUD
 ```
+
+### Endpoints de configuración implementados:
+| Método | Ruta | Descripción | Estado |
+|--------|------|-------------|--------|
+| POST | /printers | Agregar nueva impresora | ✅ Implementado |
+| PUT | /printers/{name} | Actualizar impresora | ✅ Implementado |
+| DELETE | /printers/{name} | Eliminar impresora | ✅ Implementado |
+| GET | /business | Obtener info del negocio | ✅ Implementado |
+| PUT | /business | Actualizar info del negocio | ✅ Implementado |
+| GET | /config | Obtener toda la configuración | ✅ Implementado |
+
+### Funcionalidades del ConfigurationService:
+- **AddPrinter()** - Agrega impresora con validación de duplicados
+- **UpdatePrinter()** - Actualiza impresora existente con rollback en caso de error
+- **DeletePrinter()** - Elimina impresora por nombre
+- **UpdateBusinessInfo()** - Actualiza datos del negocio
+- **SaveConfiguration()** - Persiste cambios en `appsettings.json` preservando otras secciones
+- Thread-safe con `lock` para operaciones concurrentes
 
 ### Estructura de configuración:
 ```json
@@ -246,58 +265,138 @@ src/PrintAgent.Service/
 
 ---
 
-## Fase 5: UI de Configuración (WinForms) ⏳ PENDIENTE
+## Fase 5: UI de Configuración (WinForms) ✅ COMPLETADA
 **Tiempo estimado de sesión:** ~30 min
 
 ### Objetivos:
-- [ ] Crear formulario principal con lista de impresoras
-- [ ] Crear formulario para agregar/editar impresora
-- [ ] Implementar botón de prueba de impresión
-- [ ] Agregar icono en system tray
-- [ ] Guardar configuración en appsettings.json
+- [x] Crear formulario principal con lista de impresoras
+- [x] Crear formulario para agregar/editar impresora
+- [x] Implementar botón de prueba de impresión
+- [x] Agregar icono en system tray
+- [x] Comunicación con API del servicio
 
-### Archivos a crear:
+### Archivos creados:
 ```
 src/PrintAgent.UI/
-├── Program.cs             # Modificar
-├── Forms/
-│   ├── MainForm.cs        # Ventana principal
-│   ├── MainForm.Designer.cs
-│   ├── PrinterConfigForm.cs
-│   └── PrinterConfigForm.Designer.cs
-└── Services/
-    └── ConfigService.cs   # Lee/escribe config
+├── Program.cs                              # ✅ Actualizado para usar MainForm
+├── Models/
+│   └── PrinterConfig.cs                    # ✅ Modelos para la UI
+├── Services/
+│   └── PrintAgentClient.cs                 # ✅ Cliente HTTP para comunicación con API
+└── Forms/
+    ├── MainForm.cs                         # ✅ Ventana principal
+    ├── MainForm.Designer.cs                # ✅ Diseño del form principal
+    ├── PrinterConfigForm.cs                # ✅ Form para agregar/editar impresoras
+    └── PrinterConfigForm.Designer.cs       # ✅ Diseño del form de configuración
 ```
 
-### Funcionalidades de UI:
-- Lista de impresoras configuradas
-- Botón "Agregar impresora"
-- Botón "Editar impresora"
-- Botón "Eliminar impresora"
-- Botón "Probar impresión"
-- Checkbox "Iniciar con Windows"
-- Minimizar a system tray
+### Funcionalidades implementadas:
+- **MainForm:**
+  - Lista de impresoras con columnas: Nombre, Sistema, Ancho, Tipo, Default, Estado
+  - Botones: Agregar, Editar, Eliminar, Probar, Actualizar
+  - Status bar mostrando estado del servicio
+  - Minimizar a system tray (NotifyIcon)
+  - Menú contextual en tray: Mostrar / Salir
+  - Auto-refresh del status cada 5 segundos
+  - Doble-click en impresora abre edición
+
+- **PrinterConfigForm:**
+  - Campo nombre de impresora
+  - Dropdown con impresoras del sistema Windows
+  - Selector de ancho de papel (caracteres)
+  - Tipo: Receipt / Kitchen
+  - Checkbox impresora predeterminada
+
+- **PrintAgentClient:**
+  - Comunicación HTTP con la API del servicio
+  - Métodos para CRUD de impresoras
+  - Health check y test de impresión
 
 ---
 
-## Fase 6: Instalador ⏳ PENDIENTE
+## Fase 6: Instalador ✅ COMPLETADA
 **Tiempo estimado de sesión:** ~20 min
 
 ### Objetivos:
-- [ ] Crear script de Inno Setup
-- [ ] Configurar registro como servicio Windows
-- [ ] Agregar al inicio de Windows
-- [ ] Crear acceso directo para UI de configuración
+- [x] Crear script de Inno Setup
+- [x] Configurar registro como servicio Windows
+- [x] Agregar al inicio de Windows (opcional)
+- [x] Crear acceso directo para UI de configuración
 
-### Archivos a crear:
+### Archivos creados:
 ```
 print-agent/
+├── build.ps1                       # ✅ Script PowerShell para compilar y publicar
 ├── installer/
-│   ├── setup.iss          # Script Inno Setup
+│   ├── setup.iss                   # ✅ Script Inno Setup completo
 │   └── assets/
-│       └── icon.ico       # Icono de la app
-└── build.ps1              # Script para compilar todo
+│       └── README.md               # ✅ Instrucciones para el icono
+├── scripts/
+│   ├── install-service.ps1         # ✅ Instalar servicio manualmente
+│   └── uninstall-service.ps1       # ✅ Desinstalar servicio manualmente
+└── publish/                        # ✅ Generado por build.ps1
+    ├── service/
+    │   └── PrintAgent.Service.exe  # ~91 MB (self-contained)
+    └── ui/
+        └── PrintAgent.UI.exe       # ~154 MB (self-contained)
 ```
+
+### Build y publicación:
+```powershell
+# Compilar y publicar (Release, self-contained, single-file)
+.\build.ps1 -Release
+
+# Con limpieza previa
+.\build.ps1 -Release -Clean
+```
+
+### Crear instalador:
+1. Descargar Inno Setup: https://jrsoftware.org/isdl.php
+2. Abrir `installer\setup.iss` con Inno Setup
+3. Compilar (Ctrl+F9)
+4. El instalador se genera en `dist\PrintAgent-Setup-1.0.0.exe`
+
+### El instalador hace:
+- Instala archivos en `C:\Program Files\PrintAgent\`
+- Registra `PrintAgent.Service` como servicio Windows (auto-start)
+- Configura regla de firewall para puerto 5123
+- Crea acceso directo en menú inicio
+- Opción: Acceso directo en escritorio
+- Opción: Iniciar con Windows (UI)
+
+### Scripts para desarrollo:
+```powershell
+# Instalar servicio manualmente (como Admin)
+.\scripts\install-service.ps1
+
+# Desinstalar servicio
+.\scripts\uninstall-service.ps1
+```
+
+### Distribución via GitHub Releases:
+```powershell
+# Opción 1: Release automático (recomendado)
+git tag -a v1.0.0 -m "Release v1.0.0"
+git push origin v1.0.0
+# GitHub Actions compila y publica automáticamente
+
+# Opción 2: Release manual
+.\scripts\publish-release.ps1 -Version "1.0.0"
+```
+
+### URLs de descarga:
+```
+# Página del release
+https://github.com/USUARIO/print-agent/releases/tag/v1.0.0
+
+# Descarga directa
+https://github.com/USUARIO/print-agent/releases/download/v1.0.0/PrintAgent-Setup-1.0.0.exe
+
+# Última versión
+https://github.com/USUARIO/print-agent/releases/latest
+```
+
+Ver `RELEASE.md` para documentación completa del proceso de release.
 
 ---
 
@@ -388,7 +487,27 @@ dotnet publish src/PrintAgent.UI -c Release -o ./publish/ui
   - Configurado CORS para localhost
   - Todos los endpoints probados y funcionando
   - Eliminado Worker.cs (no necesario)
-- **Próximo paso:** Continuar con Fase 4 (Configuración y Persistencia)
+- **Fase 4 completada:**
+  - Creado `IConfigurationService.cs` con interfaz para CRUD
+  - Implementado `ConfigurationService.cs` con persistencia en appsettings.json
+  - Agregados endpoints: POST/PUT/DELETE /printers, GET/PUT /business, GET /config
+  - Thread-safe con locks y rollback en caso de error
+- **Fase 5 completada:**
+  - Creado `PrintAgentClient.cs` para comunicación HTTP con la API
+  - Creados modelos locales en `Models/PrinterConfig.cs`
+  - Implementado `MainForm` con lista de impresoras y system tray
+  - Implementado `PrinterConfigForm` para agregar/editar impresoras
+  - Eliminados archivos Form1 originales
+  - Compila sin errores ni warnings
+- **Fase 6 completada:**
+  - Creado `build.ps1` para compilar y publicar (self-contained, single-file)
+  - Creado `installer/setup.iss` para Inno Setup con registro de servicio Windows
+  - Creados scripts helper: `install-service.ps1` y `uninstall-service.ps1`
+  - Build probado exitosamente: Service ~91MB, UI ~154MB
+  - Creado `scripts/publish-release.ps1` para publicar releases manualmente
+  - Creado `.github/workflows/release.yml` para CI/CD automático
+  - Creado `RELEASE.md` con documentación del proceso de release
+- **Próximo paso:** Continuar con Fase 7 (Integración con Nico)
 
 ---
 

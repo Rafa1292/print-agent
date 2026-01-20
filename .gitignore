@@ -1,0 +1,36 @@
+# Build outputs
+bin/
+obj/
+publish/
+dist/
+
+# IDE
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+
+# NuGet
+*.nupkg
+packages/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Local config (keep templates)
+appsettings.Local.json
+appsettings.*.local.json
+
+# Installer output
+installer/*.exe

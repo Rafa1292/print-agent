@@ -13,6 +13,7 @@ builder.Services.Configure<PrintAgentSettings>(
 
 // Registrar servicios
 builder.Services.AddSingleton<IPrinterService, PrinterService>();
+builder.Services.AddSingleton<IConfigurationService, ConfigurationService>();
 
 // Configurar CORS para permitir llamadas desde la web local
 builder.Services.AddCors(options =>
@@ -98,6 +99,60 @@ app.MapPost("/print/test", (PrintTestRequest request, IPrinterService printerSer
         ? PrintResult.Ok("Página de prueba impresa correctamente")
         : PrintResult.Error("Error al imprimir página de prueba", "TEST_FAILED");
     return success ? Results.Ok(result) : Results.BadRequest(result);
+});
+
+// ============================================================================
+// ENDPOINTS DE CONFIGURACIÓN
+// ============================================================================
+
+// POST /printers - Agregar nueva impresora
+app.MapPost("/printers", (PrinterConfig printer, IConfigurationService configService) =>
+{
+    var result = configService.AddPrinter(printer);
+    return result.Success ? Results.Ok(result) : Results.BadRequest(result);
+});
+
+// PUT /printers/{name} - Actualizar impresora existente
+app.MapPut("/printers/{name}", (string name, PrinterConfig printer, IConfigurationService configService) =>
+{
+    var result = configService.UpdatePrinter(name, printer);
+    if (result.ErrorCode == "NOT_FOUND")
+    {
+        return Results.NotFound(result);
+    }
+    return result.Success ? Results.Ok(result) : Results.BadRequest(result);
+});
+
+// DELETE /printers/{name} - Eliminar impresora
+app.MapDelete("/printers/{name}", (string name, IConfigurationService configService) =>
+{
+    var result = configService.DeletePrinter(name);
+    if (result.ErrorCode == "NOT_FOUND")
+    {
+        return Results.NotFound(result);
+    }
+    return result.Success ? Results.Ok(result) : Results.BadRequest(result);
+});
+
+// GET /business - Obtener información del negocio
+app.MapGet("/business", (IConfigurationService configService) =>
+{
+    var business = configService.GetBusinessInfo();
+    return Results.Ok(business);
+});
+
+// PUT /business - Actualizar información del negocio
+app.MapPut("/business", (BusinessInfo business, IConfigurationService configService) =>
+{
+    var result = configService.UpdateBusinessInfo(business);
+    return result.Success ? Results.Ok(result) : Results.BadRequest(result);
+});
+
+// GET /config - Obtener toda la configuración
+app.MapGet("/config", (IConfigurationService configService) =>
+{
+    var settings = configService.GetSettings();
+    return Results.Ok(settings);
 });
 
 app.Run();

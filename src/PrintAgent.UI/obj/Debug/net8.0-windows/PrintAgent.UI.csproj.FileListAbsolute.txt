@@ -12,3 +12,4 @@ C:\Users\jrvj_\code\Nebulosa\print-agent\src\PrintAgent.UI\obj\Debug\net8.0-wind
 C:\Users\jrvj_\code\Nebulosa\print-agent\src\PrintAgent.UI\obj\Debug\net8.0-windows\PrintAgent.UI.pdb
 C:\Users\jrvj_\code\Nebulosa\print-agent\src\PrintAgent.UI\obj\Debug\net8.0-windows\PrintAgent.UI.genruntimeconfig.cache
 C:\Users\jrvj_\code\Nebulosa\print-agent\src\PrintAgent.UI\obj\Debug\net8.0-windows\ref\PrintAgent.UI.dll
+C:\Users\jrvj_\code\Nebulosa\print-agent\src\PrintAgent.UI\obj\Debug\net8.0-windows\PrintAgent.UI.sourcelink.json

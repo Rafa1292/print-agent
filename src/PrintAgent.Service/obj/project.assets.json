@@ -605,6 +605,12 @@
           "buildTransitive/net8.0/_._": {}
         }
       },
+      "Microsoft.NET.ILLink.Tasks/8.0.23": {
+        "type": "package",
+        "build": {
+          "build/Microsoft.NET.ILLink.Tasks.props": {}
+        }
+      },
       "Microsoft.Win32.SystemEvents/10.0.2": {
         "type": "package",
         "compile": {
@@ -1386,6 +1392,12 @@
         },
         "build": {
           "buildTransitive/net8.0/_._": {}
+        }
+      },
+      "Microsoft.NET.ILLink.Tasks/8.0.23": {
+        "type": "package",
+        "build": {
+          "build/Microsoft.NET.ILLink.Tasks.props": {}
         }
       },
       "Microsoft.Win32.SystemEvents/10.0.2": {
@@ -2438,6 +2450,57 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "Microsoft.NET.ILLink.Tasks/8.0.23": {
+      "sha512": "GqHiB1HbbODWPbY/lc5xLQH8siEEhNA0ptpJCC6X6adtAYNEzu5ZlqV3YHA3Gh7fuEwgA8XqVwMtH2KNtuQM1Q==",
+      "type": "package",
+      "path": "microsoft.net.illink.tasks/8.0.23",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "LICENSE.TXT",
+        "Sdk/Sdk.props",
+        "THIRD-PARTY-NOTICES.TXT",
+        "analyzers/dotnet/cs/ILLink.CodeFixProvider.dll",
+        "analyzers/dotnet/cs/ILLink.RoslynAnalyzer.dll",
+        "build/Microsoft.NET.ILLink.Analyzers.props",
+        "build/Microsoft.NET.ILLink.Tasks.props",
+        "build/Microsoft.NET.ILLink.targets",
+        "microsoft.net.illink.tasks.8.0.23.nupkg.sha512",
+        "microsoft.net.illink.tasks.nuspec",
+        "tools/net472/ILLink.Tasks.dll",
+        "tools/net472/ILLink.Tasks.dll.config",
+        "tools/net472/Mono.Cecil.Mdb.dll",
+        "tools/net472/Mono.Cecil.Pdb.dll",
+        "tools/net472/Mono.Cecil.Rocks.dll",
+        "tools/net472/Mono.Cecil.dll",
+        "tools/net472/Sdk/Sdk.props",
+        "tools/net472/System.Buffers.dll",
+        "tools/net472/System.Collections.Immutable.dll",
+        "tools/net472/System.Memory.dll",
+        "tools/net472/System.Numerics.Vectors.dll",
+        "tools/net472/System.Reflection.Metadata.dll",
+        "tools/net472/System.Runtime.CompilerServices.Unsafe.dll",
+        "tools/net472/build/Microsoft.NET.ILLink.Analyzers.props",
+        "tools/net472/build/Microsoft.NET.ILLink.Tasks.props",
+        "tools/net472/build/Microsoft.NET.ILLink.targets",
+        "tools/net8.0/ILLink.Tasks.deps.json",
+        "tools/net8.0/ILLink.Tasks.dll",
+        "tools/net8.0/Mono.Cecil.Mdb.dll",
+        "tools/net8.0/Mono.Cecil.Pdb.dll",
+        "tools/net8.0/Mono.Cecil.Rocks.dll",
+        "tools/net8.0/Mono.Cecil.dll",
+        "tools/net8.0/Sdk/Sdk.props",
+        "tools/net8.0/build/Microsoft.NET.ILLink.Analyzers.props",
+        "tools/net8.0/build/Microsoft.NET.ILLink.Tasks.props",
+        "tools/net8.0/build/Microsoft.NET.ILLink.targets",
+        "tools/net8.0/illink.deps.json",
+        "tools/net8.0/illink.dll",
+        "tools/net8.0/illink.runtimeconfig.json",
+        "useSharedDesignerContext.txt"
+      ]
+    },
     "Microsoft.Win32.SystemEvents/10.0.2": {
       "sha512": "1G4BdeFwc8E95MpwtR7pO4rEh2YCG/o5gqcOszdQRGrWX1ayHTZtho3xPuYZTbBxKb/3kQHjL3b4nQeNGvbM9g==",
       "type": "package",
@@ -2769,6 +2832,7 @@
   "projectFileDependencyGroups": {
     "net8.0-windows7.0": [
       "Microsoft.Extensions.Hosting.WindowsServices >= 10.0.2",
+      "Microsoft.NET.ILLink.Tasks >= 8.0.23",
       "System.Drawing.Common >= 10.0.2"
     ]
   },
@@ -2818,6 +2882,12 @@
             "target": "Package",
             "version": "[10.0.2, )"
           },
+          "Microsoft.NET.ILLink.Tasks": {
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[8.0.23, )",
+            "autoReferenced": true
+          },
           "System.Drawing.Common": {
             "target": "Package",
             "version": "[10.0.2, )"
@@ -2834,6 +2904,20 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
+            "version": "[8.0.23, 8.0.23]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Runtime.win-x64",
+            "version": "[8.0.23, 8.0.23]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
+            "version": "[8.0.23, 8.0.23]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"

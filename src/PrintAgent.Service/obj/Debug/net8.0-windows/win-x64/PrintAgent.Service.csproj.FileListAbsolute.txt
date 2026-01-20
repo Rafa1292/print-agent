@@ -64,3 +64,4 @@ C:\Users\jrvj_\code\Nebulosa\print-agent\src\PrintAgent.Service\obj\Debug\net8.0
 C:\Users\jrvj_\code\Nebulosa\print-agent\src\PrintAgent.Service\obj\Debug\net8.0-windows\win-x64\staticwebassets\msbuild.buildTransitive.PrintAgent.Service.props
 C:\Users\jrvj_\code\Nebulosa\print-agent\src\PrintAgent.Service\obj\Debug\net8.0-windows\win-x64\staticwebassets.pack.json
 C:\Users\jrvj_\code\Nebulosa\print-agent\src\PrintAgent.Service\obj\Debug\net8.0-windows\win-x64\scopedcss\bundle\PrintAgent.Service.styles.css
+C:\Users\jrvj_\code\Nebulosa\print-agent\src\PrintAgent.Service\obj\Debug\net8.0-windows\win-x64\PrintAgent.Service.sourcelink.json
