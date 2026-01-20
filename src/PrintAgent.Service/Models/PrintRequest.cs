@@ -50,6 +50,9 @@ public class BillData
 
     // Notas adicionales
     public string? Notes { get; set; }
+
+    // Indica si es una reimpresión
+    public bool IsReprint { get; set; }
 }
 
 /// <summary>

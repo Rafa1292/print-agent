@@ -21,6 +21,17 @@ public class TicketBuilder
     {
         var builder = new EscPosBuilder(_lineWidth);
 
+        // Slogan de reimpresión si aplica
+        if (bill.IsReprint)
+        {
+            builder
+                .AlignCenter()
+                .Bold()
+                .Line("*** REIMPRESION ***")
+                .Bold(false)
+                .Lines(1);
+        }
+
         // Encabezado del negocio
         if (business != null)
         {
@@ -31,6 +42,12 @@ public class TicketBuilder
                 .Line(business.Name)
                 .NormalSize()
                 .Bold(false);
+
+            // Leyenda legal (Régimen Simplificado, etc.)
+            if (!string.IsNullOrEmpty(business.LegalDisclaimer))
+            {
+                builder.Line(business.LegalDisclaimer);
+            }
 
             if (!string.IsNullOrEmpty(business.Address))
             {
@@ -125,7 +142,11 @@ public class TicketBuilder
                 desc = desc[..(descWidth - 2)] + "..";
             }
 
-            builder.Line($"{qtyStr.PadRight(qtyWidth)}{desc.PadRight(descWidth)}{totalStr.PadLeft(totalWidth)}");
+            // Total del item en negrita para diferenciarlo
+            builder
+                .Bold()
+                .Line($"{qtyStr.PadRight(qtyWidth)}{desc.PadRight(descWidth)}{totalStr.PadLeft(totalWidth)}")
+                .Bold(false);
 
             // Mostrar modificadores si existen
             if (item.Modifiers != null && item.Modifiers.Count > 0)
@@ -138,10 +159,11 @@ public class TicketBuilder
                             ? $"  + {element.Quantity}x {element.Name}"
                             : $"  + {element.Name}";
 
-                        // Mostrar precio si es mayor a 0
+                        // Mostrar precio total (precio × cantidad) si es mayor a 0
                         if (element.Price > 0)
                         {
-                            string priceStr = element.Price.ToString("0.00");
+                            decimal totalPrice = element.Price * element.Quantity;
+                            string priceStr = totalPrice.ToString("0.00");
                             int availableWidth = _lineWidth - priceStr.Length - 1;
                             if (modLine.Length > availableWidth)
                             {
@@ -300,7 +322,11 @@ public class TicketBuilder
         // Items (formato compacto)
         foreach (var item in bill.Items.Where(i => !i.IsCancelled))
         {
-            builder.ItemLine(item.Description, item.Quantity, item.UnitPrice, item.Total);
+            // Item con total en negrita
+            builder
+                .Bold()
+                .ItemLine(item.Description, item.Quantity, item.UnitPrice, item.Total)
+                .Bold(false);
 
             // Mostrar modificadores si existen
             if (item.Modifiers != null && item.Modifiers.Count > 0)
@@ -313,9 +339,11 @@ public class TicketBuilder
                             ? $"  + {element.Quantity}x {element.Name}"
                             : $"  + {element.Name}";
 
+                        // Mostrar precio total (precio × cantidad)
                         if (element.Price > 0)
                         {
-                            builder.Line($"{modLine} ({element.Price:0.00})");
+                            decimal totalPrice = element.Price * element.Quantity;
+                            builder.Line($"{modLine} ({totalPrice:0.00})");
                         }
                         else
                         {

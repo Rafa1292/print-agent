@@ -31,4 +31,5 @@ public class BusinessInfo
     public string TaxId { get; set; } = string.Empty;
     public string? Logo { get; set; } // URL del logo (para referencia, no se imprime en ESC/POS básico)
     public string? ThankYouMessage { get; set; } // Mensaje de agradecimiento al final del ticket
+    public string? LegalDisclaimer { get; set; } // Leyenda legal (ej: "Régimen Simplificado")
 }
