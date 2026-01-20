@@ -51,12 +51,6 @@ public class TicketBuilder
                 .NormalSize()
                 .Bold(false);
 
-            // Leyenda legal (Régimen Simplificado, etc.)
-            if (!string.IsNullOrEmpty(business.LegalDisclaimer))
-            {
-                builder.Line(business.LegalDisclaimer);
-            }
-
             if (!string.IsNullOrEmpty(business.Address))
             {
                 builder.Line(business.Address);
@@ -276,6 +270,14 @@ public class TicketBuilder
         else
         {
             builder.Line("Gracias por su preferencia!");
+        }
+
+        // Leyenda legal al final (Régimen Simplificado, etc.)
+        if (business != null && !string.IsNullOrEmpty(business.LegalDisclaimer))
+        {
+            builder
+                .Lines(1)
+                .Line(business.LegalDisclaimer);
         }
 
         builder
