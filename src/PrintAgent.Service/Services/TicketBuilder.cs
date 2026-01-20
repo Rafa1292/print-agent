@@ -30,11 +30,25 @@ public class TicketBuilder
                 .DoubleSize()
                 .Line(business.Name)
                 .NormalSize()
-                .Bold(false)
-                .Line(business.Address)
-                .Line($"Tel: {business.Phone}")
-                .Line($"RUC: {business.TaxId}")
-                .Lines(1);
+                .Bold(false);
+
+            if (!string.IsNullOrEmpty(business.Address))
+            {
+                builder.Line(business.Address);
+            }
+            if (!string.IsNullOrEmpty(business.Address2))
+            {
+                builder.Line(business.Address2);
+            }
+            if (!string.IsNullOrEmpty(business.Phone))
+            {
+                builder.Line($"Tel: {business.Phone}");
+            }
+            if (!string.IsNullOrEmpty(business.TaxId))
+            {
+                builder.Line($"Ced: {business.TaxId}");
+            }
+            builder.Lines(1);
         }
 
         // Tipo de documento y número
@@ -113,6 +127,36 @@ public class TicketBuilder
 
             builder.Line($"{qtyStr.PadRight(qtyWidth)}{desc.PadRight(descWidth)}{totalStr.PadLeft(totalWidth)}");
 
+            // Mostrar modificadores si existen
+            if (item.Modifiers != null && item.Modifiers.Count > 0)
+            {
+                foreach (var modGroup in item.Modifiers)
+                {
+                    foreach (var element in modGroup.Elements)
+                    {
+                        string modLine = element.Quantity > 1
+                            ? $"  + {element.Quantity}x {element.Name}"
+                            : $"  + {element.Name}";
+
+                        // Mostrar precio si es mayor a 0
+                        if (element.Price > 0)
+                        {
+                            string priceStr = element.Price.ToString("0.00");
+                            int availableWidth = _lineWidth - priceStr.Length - 1;
+                            if (modLine.Length > availableWidth)
+                            {
+                                modLine = modLine[..(availableWidth - 2)] + "..";
+                            }
+                            builder.Line($"{modLine.PadRight(availableWidth)} {priceStr}");
+                        }
+                        else
+                        {
+                            builder.Line(modLine);
+                        }
+                    }
+                }
+            }
+
             // Si hay descuento en el item, mostrarlo
             if (item.Discount > 0)
             {
@@ -145,12 +189,31 @@ public class TicketBuilder
             .NormalSize()
             .Bold(false);
 
-        // Método de pago
-        if (!string.IsNullOrEmpty(bill.PayMethod))
+        // Métodos de pago
+        builder.Lines(1);
+
+        // Primero verificar si hay pagos múltiples
+        if (bill.Payments != null && bill.Payments.Count > 0)
         {
-            builder
-                .Lines(1)
-                .Row("Pago:", bill.PayMethod);
+            foreach (var payment in bill.Payments)
+            {
+                builder.Row($"{payment.PayMethodName}:", payment.Amount.ToString("0.00"));
+
+                // Si es efectivo, mostrar recibido y cambio
+                if (payment.AmountReceived.HasValue && payment.AmountReceived.Value > payment.Amount)
+                {
+                    builder.Row("  Recibido:", payment.AmountReceived.Value.ToString("0.00"));
+                    if (payment.Change.HasValue && payment.Change.Value > 0)
+                    {
+                        builder.Row("  Cambio:", payment.Change.Value.ToString("0.00"));
+                    }
+                }
+            }
+        }
+        // Fallback a campos legacy si no hay pagos múltiples
+        else if (!string.IsNullOrEmpty(bill.PayMethod))
+        {
+            builder.Row("Pago:", bill.PayMethod);
 
             if (bill.AmountPaid.HasValue)
             {
@@ -171,11 +234,21 @@ public class TicketBuilder
                 .Line($"Nota: {bill.Notes}");
         }
 
-        // Pie de ticket
+        // Pie de ticket con mensaje personalizado
         builder
             .Lines(2)
-            .AlignCenter()
-            .Line("Gracias por su preferencia!")
+            .AlignCenter();
+
+        if (business != null && !string.IsNullOrEmpty(business.ThankYouMessage))
+        {
+            builder.Line(business.ThankYouMessage);
+        }
+        else
+        {
+            builder.Line("Gracias por su preferencia!");
+        }
+
+        builder
             .Lines(1)
             .Cut();
 
@@ -228,6 +301,29 @@ public class TicketBuilder
         foreach (var item in bill.Items.Where(i => !i.IsCancelled))
         {
             builder.ItemLine(item.Description, item.Quantity, item.UnitPrice, item.Total);
+
+            // Mostrar modificadores si existen
+            if (item.Modifiers != null && item.Modifiers.Count > 0)
+            {
+                foreach (var modGroup in item.Modifiers)
+                {
+                    foreach (var element in modGroup.Elements)
+                    {
+                        string modLine = element.Quantity > 1
+                            ? $"  + {element.Quantity}x {element.Name}"
+                            : $"  + {element.Name}";
+
+                        if (element.Price > 0)
+                        {
+                            builder.Line($"{modLine} ({element.Price:0.00})");
+                        }
+                        else
+                        {
+                            builder.Line(modLine);
+                        }
+                    }
+                }
+            }
         }
 
         builder.Separator();

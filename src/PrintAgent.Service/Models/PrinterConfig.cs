@@ -26,6 +26,9 @@ public class BusinessInfo
 {
     public string Name { get; set; } = string.Empty;
     public string Address { get; set; } = string.Empty;
+    public string? Address2 { get; set; }
     public string Phone { get; set; } = string.Empty;
     public string TaxId { get; set; } = string.Empty;
+    public string? Logo { get; set; } // URL del logo (para referencia, no se imprime en ESC/POS básico)
+    public string? ThankYouMessage { get; set; } // Mensaje de agradecimiento al final del ticket
 }

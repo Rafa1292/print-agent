@@ -20,6 +20,7 @@ public class BillData
     public int OrderNumber { get; set; }
     public string DeliveryMethod { get; set; } = "DINE_IN"; // DINE_IN | TAKEOUT | DELIVERY
     public int? TableNumber { get; set; }
+    public string? RoomName { get; set; }
     public string? CustomerName { get; set; }
     public string? CustomerPhone { get; set; }
     public string? CustomerIdNumber { get; set; }
@@ -32,10 +33,13 @@ public class BillData
     public decimal Total { get; set; }
     public decimal? Tip { get; set; }
 
-    // Pago
+    // Pago (campos legacy para compatibilidad)
     public string? PayMethod { get; set; }
     public decimal? AmountPaid { get; set; }
     public decimal? Change { get; set; }
+
+    // Pagos múltiples (nuevo)
+    public List<BillPaymentData>? Payments { get; set; }
 
     // Fechas (ISO string desde JS)
     public string? CreatedAt { get; set; }
@@ -46,6 +50,17 @@ public class BillData
 
     // Notas adicionales
     public string? Notes { get; set; }
+}
+
+/// <summary>
+/// Información de pago individual
+/// </summary>
+public class BillPaymentData
+{
+    public string PayMethodName { get; set; } = string.Empty;
+    public decimal Amount { get; set; }
+    public decimal? AmountReceived { get; set; }
+    public decimal? Change { get; set; }
 }
 
 /// <summary>
@@ -62,6 +77,28 @@ public class BillItemData
     public decimal Tax { get; set; }
     public decimal Total { get; set; }
     public bool IsCancelled { get; set; }
+
+    // Modificadores del item (nuevo)
+    public List<BillItemModifierGroup>? Modifiers { get; set; }
+}
+
+/// <summary>
+/// Grupo de modificadores para un item de factura
+/// </summary>
+public class BillItemModifierGroup
+{
+    public string GroupName { get; set; } = string.Empty;
+    public List<BillItemModifierElement> Elements { get; set; } = new();
+}
+
+/// <summary>
+/// Elemento individual de modificador
+/// </summary>
+public class BillItemModifierElement
+{
+    public string Name { get; set; } = string.Empty;
+    public decimal Price { get; set; }
+    public int Quantity { get; set; }
 }
 
 // ============================================================================
