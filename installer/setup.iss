@@ -3,7 +3,7 @@
 ; Download from: https://jrsoftware.org/isdl.php
 
 #define MyAppName "PrintAgent"
-#define MyAppVersion "1.0.0"
+#define MyAppVersion "1.1.0"
 #define MyAppPublisher "Nebulosa"
 #define MyAppURL "https://github.com/nebulosa"
 #define MyServiceName "PrintAgent.Service"
