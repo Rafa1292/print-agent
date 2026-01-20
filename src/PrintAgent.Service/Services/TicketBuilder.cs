@@ -123,6 +123,20 @@ public class TicketBuilder
             builder.WrappedLine(bill.CustomerAddress);
         }
 
+        // Datos de facturación (solo si están presentes)
+        if (!string.IsNullOrEmpty(bill.InvoiceIdNumber))
+        {
+            builder.Line($"Cedula: {bill.InvoiceIdNumber}");
+        }
+        if (!string.IsNullOrEmpty(bill.InvoiceCommercialName))
+        {
+            builder.WrappedLine(bill.InvoiceCommercialName);
+        }
+        if (!string.IsNullOrEmpty(bill.InvoiceEmail))
+        {
+            builder.Line(bill.InvoiceEmail);
+        }
+
         builder.Separator();
 
         // Encabezado de items

@@ -27,6 +27,11 @@ public class BillData
     public string? CustomerAddress { get; set; }
     public string? DeliveryAddress { get; set; }
 
+    // Datos de facturación
+    public string? InvoiceIdNumber { get; set; }
+    public string? InvoiceCommercialName { get; set; }
+    public string? InvoiceEmail { get; set; }
+
     // Totales
     public decimal Subtotal { get; set; }
     public decimal Tax { get; set; }
