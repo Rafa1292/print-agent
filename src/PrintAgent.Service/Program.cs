@@ -32,7 +32,10 @@ builder.Services.AddCors(options =>
             .SetIsOriginAllowed(origin =>
             {
                 var uri = new Uri(origin);
-                return uri.Host == "localhost" || uri.Host == "127.0.0.1";
+                return uri.Host == "localhost"
+                    || uri.Host == "127.0.0.1"
+                    || uri.Host == "nicomanager.com"
+                    || uri.Host.EndsWith(".nicomanager.com");
             })
             .AllowAnyMethod()
             .AllowAnyHeader();
