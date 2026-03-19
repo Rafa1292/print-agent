@@ -12,7 +12,8 @@ public class PrinterConfig
 public enum PrinterType
 {
     Receipt,
-    Kitchen
+    Kitchen,
+    Both
 }
 
 public class PrintAgentSettings

@@ -234,6 +234,14 @@ public class TicketBuilder
             builder.Row("Descuento:", $"-{bill.Discount:0.00}");
         }
 
+        if (bill.ServiceCharge.HasValue && bill.ServiceCharge.Value > 0)
+        {
+            var pct = bill.ServiceChargeRate.HasValue
+                ? $" ({bill.ServiceChargeRate.Value * 100:0.##}%)"
+                : "";
+            builder.Row($"Cargo servicio{pct}:", bill.ServiceCharge.Value.ToString("0.00"));
+        }
+
         if (bill.Tip.HasValue && bill.Tip.Value > 0)
         {
             builder.Row("Propina:", bill.Tip.Value.ToString("0.00"));
@@ -422,6 +430,14 @@ public class TicketBuilder
         if (bill.Discount > 0)
         {
             builder.Row("Descuento:", $"-{bill.Discount:0.00}");
+        }
+
+        if (bill.ServiceCharge.HasValue && bill.ServiceCharge.Value > 0)
+        {
+            var pct = bill.ServiceChargeRate.HasValue
+                ? $" ({bill.ServiceChargeRate.Value * 100:0.##}%)"
+                : "";
+            builder.Row($"Cargo servicio{pct}:", bill.ServiceCharge.Value.ToString("0.00"));
         }
 
         builder

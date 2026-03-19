@@ -39,6 +39,10 @@ public class BillData
     public decimal Total { get; set; }
     public decimal? Tip { get; set; }
 
+    // Cargo por servicio
+    public decimal? ServiceCharge { get; set; }
+    public decimal? ServiceChargeRate { get; set; }
+
     // Pago (campos legacy para compatibilidad)
     public string? PayMethod { get; set; }
     public decimal? AmountPaid { get; set; }
