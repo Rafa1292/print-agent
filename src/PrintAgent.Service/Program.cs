@@ -1,3 +1,5 @@
+using System.Net;
+using System.Net.Sockets;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.Options;
 using PrintAgent.Service.Models;
@@ -34,6 +36,8 @@ builder.Services.AddCors(options =>
                 var uri = new Uri(origin);
                 return uri.Host == "localhost"
                     || uri.Host == "127.0.0.1"
+                    || uri.Host.StartsWith("192.168.")
+                    || uri.Host.StartsWith("10.")
                     || uri.Host == "nicomanager.com"
                     || uri.Host.EndsWith(".nicomanager.com");
             })
@@ -53,6 +57,24 @@ var startTime = DateTime.Now;
 // ============================================================================
 // ENDPOINTS
 // ============================================================================
+
+// GET /network-info - IPs locales de la máquina
+app.MapGet("/network-info", (IOptions<PrintAgentSettings> settings) =>
+{
+    var port = settings.Value.Port;
+    var ips = Dns.GetHostEntry(Dns.GetHostName())
+        .AddressList
+        .Where(a => a.AddressFamily == AddressFamily.InterNetwork)
+        .Select(a => a.ToString())
+        .ToList();
+
+    return Results.Ok(new
+    {
+        port,
+        ips,
+        urls = ips.Select(ip => $"http://{ip}:{port}").ToList()
+    });
+});
 
 // GET /health - Status del agente
 app.MapGet("/health", (IPrinterService printerService, IOptions<PrintAgentSettings> settings) =>
