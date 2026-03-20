@@ -300,6 +300,25 @@ public class TicketBuilder
                 .Line($"Nota: {bill.Notes}");
         }
 
+        // QR de ubicación de entrega
+        if (!string.IsNullOrEmpty(bill.DeliveryLocation))
+        {
+            var locationUrl = bill.DeliveryLocation.StartsWith("http", StringComparison.OrdinalIgnoreCase)
+                ? bill.DeliveryLocation
+                : $"https://www.google.com/maps/search/?api=1&query={Uri.EscapeDataString(bill.DeliveryLocation)}";
+
+            builder
+                .Lines(1)
+                .AlignCenter()
+                .Bold()
+                .Line("Ubicacion de entrega")
+                .Bold(false)
+                .QrCode(locationUrl, 5)
+                .Lines(1)
+                .AlignLeft()
+                .WrappedLine(bill.DeliveryLocation);
+        }
+
         // Pie de ticket con mensaje personalizado
         builder
             .Lines(2)

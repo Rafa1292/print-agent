@@ -26,6 +26,7 @@ public class BillData
     public string? CustomerIdNumber { get; set; }
     public string? CustomerAddress { get; set; }
     public string? DeliveryAddress { get; set; }
+    public string? DeliveryLocation { get; set; } // URL o texto de ubicación para QR
 
     // Datos de facturación
     public string? InvoiceIdNumber { get; set; }
