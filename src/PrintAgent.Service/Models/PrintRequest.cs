@@ -44,6 +44,9 @@ public class BillData
     public decimal? ServiceCharge { get; set; }
     public decimal? ServiceChargeRate { get; set; }
 
+    // Servicio express (envío cobrado a terceros, fuera del total de venta)
+    public decimal? ExpressFee { get; set; }
+
     // Pago (campos legacy para compatibilidad)
     public string? PayMethod { get; set; }
     public decimal? AmountPaid { get; set; }

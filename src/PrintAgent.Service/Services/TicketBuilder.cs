@@ -255,6 +255,19 @@ public class TicketBuilder
             .NormalSize()
             .Bold(false);
 
+        // Servicio express (envío): fuera de la venta, se suma para el cobro al cliente
+        if (bill.ExpressFee.HasValue && bill.ExpressFee.Value > 0)
+        {
+            builder
+                .Row("Servicio express:", bill.ExpressFee.Value.ToString("0.00"))
+                .DoubleSeparator()
+                .Bold()
+                .DoubleHeight()
+                .Row("TOTAL A PAGAR:", (bill.Total + bill.ExpressFee.Value).ToString("0.00"))
+                .NormalSize()
+                .Bold(false);
+        }
+
         // Métodos de pago
         builder.Lines(1);
 
@@ -466,6 +479,19 @@ public class TicketBuilder
             .Row("TOTAL:", bill.Total.ToString("0.00"))
             .NormalSize()
             .Bold(false);
+
+        // Servicio express (envío): fuera de la venta, se suma para el cobro al cliente
+        if (bill.ExpressFee.HasValue && bill.ExpressFee.Value > 0)
+        {
+            builder
+                .Row("Servicio express:", bill.ExpressFee.Value.ToString("0.00"))
+                .DoubleSeparator()
+                .Bold()
+                .DoubleHeight()
+                .Row("TOTAL A PAGAR:", (bill.Total + bill.ExpressFee.Value).ToString("0.00"))
+                .NormalSize()
+                .Bold(false);
+        }
 
         // Aviso
         builder
