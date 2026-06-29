@@ -255,19 +255,6 @@ public class TicketBuilder
             .NormalSize()
             .Bold(false);
 
-        // Servicio express (envío): fuera de la venta, se suma para el cobro al cliente
-        if (bill.ExpressFee.HasValue && bill.ExpressFee.Value > 0)
-        {
-            builder
-                .Row("Servicio express:", bill.ExpressFee.Value.ToString("0.00"))
-                .DoubleSeparator()
-                .Bold()
-                .DoubleHeight()
-                .Row("TOTAL A PAGAR:", (bill.Total + bill.ExpressFee.Value).ToString("0.00"))
-                .NormalSize()
-                .Bold(false);
-        }
-
         // Métodos de pago
         builder.Lines(1);
 
@@ -305,6 +292,21 @@ public class TicketBuilder
             }
         }
 
+        // Servicio express (envío): NO es venta; se cobra al cliente aparte de la
+        // comida. Va al final para no descuadrar el TOTAL de la venta con su pago.
+        if (bill.ExpressFee.HasValue && bill.ExpressFee.Value > 0)
+        {
+            builder
+                .Separator()
+                .Row("Servicio express:", bill.ExpressFee.Value.ToString("0.00"))
+                .DoubleSeparator()
+                .Bold()
+                .DoubleHeight()
+                .Row("TOTAL A PAGAR:", (bill.Total + bill.ExpressFee.Value).ToString("0.00"))
+                .NormalSize()
+                .Bold(false);
+        }
+
         // Notas
         if (!string.IsNullOrEmpty(bill.Notes))
         {
@@ -328,8 +330,7 @@ public class TicketBuilder
                 .Bold(false)
                 .QrCode(locationUrl, 5)
                 .Lines(1)
-                .AlignLeft()
-                .WrappedLine(bill.DeliveryLocation);
+                .AlignLeft();
         }
 
         // Pie de ticket con mensaje personalizado
