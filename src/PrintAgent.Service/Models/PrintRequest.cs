@@ -28,6 +28,11 @@ public class BillData
     public string? DeliveryAddress { get; set; }
     public string? DeliveryLocation { get; set; } // URL o texto de ubicación para QR
 
+    // Biper digital: URL de /factura/[token] que se imprime como QR al pie del
+    // tiquete. El cliente lo escanea y sigue el estado de su pedido en el
+    // celular. Null en negocios sin autopedido por QR: ahí el bloque se omite.
+    public string? TrackingUrl { get; set; }
+
     // Datos de facturación
     public string? InvoiceIdNumber { get; set; }
     public string? InvoiceCommercialName { get; set; }

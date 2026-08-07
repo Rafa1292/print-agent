@@ -333,6 +333,23 @@ public class TicketBuilder
                 .AlignLeft();
         }
 
+        // Biper digital: QR para seguir el estado del pedido. Va despues del
+        // QR de ubicacion y antes del pie, que es donde el cliente lo busca
+        // cuando ya tiene el papel en la mano.
+        if (!string.IsNullOrEmpty(bill.TrackingUrl))
+        {
+            builder
+                .Lines(1)
+                .AlignCenter()
+                .Bold()
+                .Line("Segui tu pedido")
+                .Bold(false)
+                .Line("Escanea y te avisamos cuando este listo")
+                .QrCode(bill.TrackingUrl, 5)
+                .Lines(1)
+                .AlignLeft();
+        }
+
         // Pie de ticket con mensaje personalizado
         builder
             .Lines(2)
