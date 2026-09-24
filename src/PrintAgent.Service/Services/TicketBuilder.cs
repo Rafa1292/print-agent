@@ -350,6 +350,23 @@ public class TicketBuilder
                 .AlignLeft();
         }
 
+        // Sellos: QR de ESTA factura para reclamar el sello. Va antes del QR de
+        // juegos porque es la accion que el cliente hace con el papel en la mano.
+        if (!string.IsNullOrEmpty(bill.StampsUrl))
+        {
+            builder
+                .Lines(1)
+                .AlignCenter()
+                .Bold()
+                .Line("Gana un sello")
+                .Bold(false)
+                .Line("Escanea, cuentanos como estuvo")
+                .Line("y suma a tu tarjeta de premios")
+                .QrCode(bill.StampsUrl, 5)
+                .Lines(1)
+                .AlignLeft();
+        }
+
         // Juegos: QR para que el cliente juegue con las fichas de su compra. Va
         // despues del biper y antes del pie. Sin GamesUrl se omite el bloque entero.
         if (!string.IsNullOrEmpty(bill.GamesUrl))

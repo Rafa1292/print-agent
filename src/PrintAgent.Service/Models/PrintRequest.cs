@@ -38,6 +38,11 @@ public class BillData
     // prendio: el bloque se omite entero.
     public string? GamesUrl { get; set; }
 
+    // Sellos: URL /sellos/[token] de ESTA factura, para que el cliente reclame su
+    // sello dejando una resena. Null cuando el negocio no tiene el programa
+    // activo: el bloque se omite entero.
+    public string? StampsUrl { get; set; }
+
     // Datos de facturación
     public string? InvoiceIdNumber { get; set; }
     public string? InvoiceCommercialName { get; set; }
