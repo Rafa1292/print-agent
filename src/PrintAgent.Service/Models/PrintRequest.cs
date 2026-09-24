@@ -33,6 +33,11 @@ public class BillData
     // celular. Null en negocios sin autopedido por QR: ahí el bloque se omite.
     public string? TrackingUrl { get; set; }
 
+    // Juegos: URL del link/QR fijo del negocio (/games/[token] en nico) que se
+    // imprime como QR al pie del tiquete de factura. Null cuando el negocio no lo
+    // prendio: el bloque se omite entero.
+    public string? GamesUrl { get; set; }
+
     // Datos de facturación
     public string? InvoiceIdNumber { get; set; }
     public string? InvoiceCommercialName { get; set; }

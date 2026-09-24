@@ -350,6 +350,22 @@ public class TicketBuilder
                 .AlignLeft();
         }
 
+        // Juegos: QR para que el cliente juegue con las fichas de su compra. Va
+        // despues del biper y antes del pie. Sin GamesUrl se omite el bloque entero.
+        if (!string.IsNullOrEmpty(bill.GamesUrl))
+        {
+            builder
+                .Lines(1)
+                .AlignCenter()
+                .Bold()
+                .Line("Juega con tu compra")
+                .Bold(false)
+                .Line("Escanea y gana fichas para jugar")
+                .QrCode(bill.GamesUrl, 5)
+                .Lines(1)
+                .AlignLeft();
+        }
+
         // Pie de ticket con mensaje personalizado
         builder
             .Lines(2)
